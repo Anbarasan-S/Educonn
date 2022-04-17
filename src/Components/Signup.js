@@ -1,6 +1,5 @@
 import React,{useState} from 'react'
-import {Card,Form,Button,Spinner, CardImg} from 'react-bootstrap'
-import Cookies from 'js-cookie'
+import {Card,Form,Button,Spinner} from 'react-bootstrap'
 import axios from 'axios'
 
 const Signup = () => {

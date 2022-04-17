@@ -2,40 +2,40 @@ import React,{useEffect,useContext,useState} from 'react'
 import { Auth } from '../Auth/Validator';
 import { ApiAuth } from '../Context/ApiAuth';
 import { Spinner } from 'react-bootstrap';
-
+import Loading from './Loading';
 
 const Home = () => {
     const {setAuth,setUser,user,auth}=useContext(ApiAuth);
     const [spinner,setSpinner]=useState(true);
 
     
-    useEffect(()=>{
-        const validator=async()=>{
-          const res=await Auth();
-           if(res.msg==="success")
-          {
-            setAuth(true);
-            setSpinner(false);
-            setUser({username:res.username,profilePicture:res.profilePicture});
-          }
-          else
-          {
-            window.location.href="/login";
-            setSpinner(false);
-            return;
-          }
-        }
-        validator();
-        console.log(user);
+ 
+    useEffect(async()=>{
+      try
+      {
+      const result=await Auth();
+      if(!(result.msg==="success"))
+      {
+        window.location.href="/login";
         return;
-      },[setAuth,setUser]);
+      }
+      if(!user)
+      {
+        const{username,profilePicture}=result;
+        setUser({username:username,profilePicture:profilePicture});
+      }
+    }
+    catch(err)
+    {
+      console.log("err")
+      window.location.href="/login";
+      return;
+    }
+    },[])
     
   return (
       <>
-   {spinner&&<div style={{display:"flex",justifyContent:"center",verticalAlign:"middle",alignItems:"center",marginTop:"20rem"}}><Spinner animation="grow" variant="success"></Spinner>
-   <Spinner animation="grow" variant="success"></Spinner>
-   <Spinner animation="grow" variant="success"></Spinner>
-    </div>}
+   {spinner&&<Loading />}
    {auth&&<div>{user.username}</div>}
    </>
     

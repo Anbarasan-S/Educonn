@@ -7,24 +7,27 @@ import Home from './Components/Home';
 import Login from './Login';
 import Post from './Components/Post'
 import Verify from './Components/Verify';
-import {  useState } from 'react';
+import React,{  useEffect, useState } from 'react';
+import { Auth } from './Auth/Validator';
+
 
 function App() {
   const [auth,setAuth]=useState(false);
   const [user,setUser]=useState({});
+
+
   return (                                                                 
     <div className='app'>
     <h1 className='title' >EduConn</h1>
       <ApiAuth.Provider value={{auth,setAuth,user,setUser}}>
         <Routes>
       <Route path='/verify' element={<Verify />}></Route>
-      <Route path='/' element={<Home />}></Route>
+      <Route path='/' exact element={<Home />}></Route>
       <Route path='/login' element={<Login />}></Route>
       <Route path='/signup' element={<Signup />}></Route>
       <Route path="/post" element={<Post/>}></Route>
         </Routes>
         </ApiAuth.Provider> 
-  
     </div>
   );
 }
